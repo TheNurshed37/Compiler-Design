@@ -1,0 +1,6 @@
+int main()
+{
+    int x2,a,num$,y,;
+    p=x+y+77;
+    return p;
+}
