@@ -4,15 +4,6 @@
 #include<vector>
 using namespace std;
 
-bool isSeparator(char ch)
-{
-    string value = " ,;(){}[]";
-    for(int i=0;i<value.length();i++)
-        if(ch==value[i])
-            return true;
-        return false;
-}
-
 bool isOperator(char ch)
 {
     string value = "+-*/<>=!";
@@ -21,7 +12,6 @@ bool isOperator(char ch)
             return true;
         return false;
 }
-
 bool isKeyword(string s)
 {
     string keyword[]={"if","else","int","for","float","return","while","static","char","continue","sizeof"};
@@ -30,11 +20,28 @@ bool isKeyword(string s)
         return true;
     return false;
 }
-
+bool isFunction(string s)
+{
+    string Function[]={"add","cout","cin","printf","main"};
+    for(int i=0;i<(sizeof(Function)/sizeof(string));i++)
+        if(s==Function[i])
+        return true;
+    return false;
+}
+bool isSeparator(char ch)
+{
+    string value = " ,;(){}[]";
+    for(int i=0;i<value.length();i++)
+        if(ch==value[i])
+            return true;
+        return false;
+}
 bool isIdentifier(string s)
 {
     bool valid = true;
     if(isKeyword(s))
+        valid = false ;
+     if(isFunction(s))
         valid = false ;
     if(valid)
         if((s[0] >= '0')&&(s[0]<='9'))
@@ -48,10 +55,8 @@ bool isIdentifier(string s)
                 valid=false;
                 break;
             }
-
      return valid;
 }
-
 bool isNumber(string s)
 {
     bool valid =true;
@@ -99,22 +104,22 @@ void parse(string s)
     }
 
     //output
-
     for(int i=0; i<tokens.size();i++)
     {
-        if(isKeyword(tokens[i]))
+        if(isOperator(tokens[i][0]))
+            cout<<'\"'<<tokens[i]<<"\" is a Operator "<<endl;
+        else if(isKeyword(tokens[i]))
             cout<<'\"'<<tokens[i]<<"\" is a Keyword "<<endl;
+        else if(isFunction(tokens[i]))
+            cout<<'\"'<<tokens[i]<<"\" is a function "<<endl;
+        else if(isNumber(tokens[i]))
+            cout<<'\"'<<tokens[i]<<"\" is a Number "<<endl;
         else if(isIdentifier(tokens[i]))
             cout<<'\"'<<tokens[i]<<"\" is a Identifier "<<endl;
-         else if(isNumber(tokens[i]))
-            cout<<'\"'<<tokens[i]<<"\" is a Number "<<endl;
-         else if(isOperator(tokens[i][0]))
-            cout<<'\"'<<tokens[i]<<"\" is a Operator "<<endl;
         else
-          cout<<'\"'<<tokens[i]<<"\" is an Invalid Identifier "<<endl;
+            cout<<'\"'<<tokens[i]<<"\" is an Invalid identifier "<<endl;
     }
 }
-
 int main()
 {
     fstream file;
